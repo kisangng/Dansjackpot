@@ -30,26 +30,26 @@
         }
 
         h1 { 
-            font-family: 'Orbitron', sans-serif; font-size: 1.6rem;
+            font-family: 'Orbitron', sans-serif; font-size: 1.4rem;
             color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.5);
             margin: 5px 0;
         }
 
         .machine-container {
-            position: relative; width: 65vw; height: 65vw; max-width: 240px; max-height: 240px;
+            position: relative; width: 60vw; height: 60vw; max-width: 220px; max-height: 220px;
             border: 6px solid #475569; border-radius: 50%;
             background: rgba(0,0,0,0.6); box-shadow: inset 0 0 30px #000;
             overflow: hidden;
         }
 
         .phys-ball {
-            position: absolute; width: 22px; height: 22px; border-radius: 50%;
+            position: absolute; width: 20px; height: 20px; border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #fff, #94a3b8);
             color: #000; font-size: 8px; font-weight: bold;
             display: flex; align-items: center; justify-content: center;
         }
 
-        .pipe { width: 50px; height: 20px; background: #475569; clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%); }
+        .pipe { width: 40px; height: 20px; background: #475569; clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%); }
 
         .dropping-ball {
             position: absolute; width: 45px; height: 45px; border-radius: 50%;
@@ -60,46 +60,55 @@
 
         @keyframes drop {
             0% { transform: translate(-50%, 0) scale(0.6); opacity: 1; }
-            100% { transform: translate(-50%, 80px) scale(1) rotate(360deg); opacity: 0; }
+            100% { transform: translate(-50%, 60px) scale(1) rotate(360deg); opacity: 0; }
         }
         .anim-drop { display: flex; animation: drop 0.6s ease-in forwards; }
 
-        /* 결과 영역 레이아웃 수정 */
-        .result-area {
-            display: flex; flex-direction: column; gap: 15px; align-items: center;
-            width: 100%;
-        }
-
-        /* 그리드를 사용하여 윗줄 5칸 강제 고정 */
-        #main-tray {
-            display: grid;
-            grid-template-columns: repeat(5, 45px); /* 45px씩 5칸 고정 */
-            gap: 10px;
-            justify-content: center;
-            width: 100%;
-        }
-
-        /* 보너스 줄 2칸 강제 고정 */
-        #bonus-tray {
-            display: grid;
-            grid-template-columns: repeat(2, 45px); /* 45px씩 2칸 고정 */
+        .result-section {
+            width: 90vw;
+            display: flex;
+            flex-direction: column;
             gap: 15px;
+        }
+
+        .tray-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 12px 10px;
+            position: relative;
+        }
+
+        .tray-label {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #101a2b; /* 배경색에 맞춰 살짝 조정 */
+            padding: 0 10px;
+            font-size: 0.75rem;
+            font-family: 'Orbitron';
+            letter-spacing: 1px;
+            color: var(--gold);
+        }
+
+        .tray {
+            display: flex;
             justify-content: center;
-            padding: 10px 20px;
-            background: rgba(168, 85, 247, 0.15);
-            border-radius: 50px;
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            align-items: center;
+            gap: 8px;
+            min-height: 45px;
         }
 
         .final-ball {
-            width: 45px; height: 45px; border-radius: 50%;
+            width: 40px; height: 40px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: bold; color: #000;
+            font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: bold; color: #000;
             animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            flex-shrink: 0;
         }
         .main { background: linear-gradient(135deg, #ffd700, #b8860b); }
-        .euro { background: linear-gradient(135deg, #e879f9, #6b21a8); color: white; }
+        .bonus { background: linear-gradient(135deg, #e879f9, #6b21a8); color: white; }
 
         @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
@@ -131,8 +140,17 @@
         <div id="dropping-ball" class="dropping-ball"></div>
     </div>
 
-    <div class="result-area">
-        <div id="main-tray"></div> <div id="bonus-tray"></div> </div>
+    <div class="result-section">
+        <div class="tray-box">
+            <div class="tray-label">MAIN NUMBERS</div>
+            <div class="tray" id="main-tray"></div>
+        </div>
+
+        <div class="tray-box" style="border-color: var(--purple);">
+            <div class="tray-label" style="color: var(--purple);">BONUS NUMBERS</div>
+            <div class="tray" id="bonus-tray"></div>
+        </div>
+    </div>
 
     <button id="draw-btn" class="btn-draw" onclick="startDraw()">START DRAW</button>
 
@@ -162,14 +180,14 @@
                 el.innerText = Math.floor(Math.random()*50)+1;
                 machine.appendChild(el);
                 balls.push({
-                    el, x: Math.random()*210, y: Math.random()*210,
+                    el, x: Math.random()*190, y: Math.random()*190,
                     vx: (Math.random()-0.5)*5, vy: (Math.random()-0.5)*5
                 });
             }
         }
 
         function animate() {
-            const size = machine.offsetWidth - 25;
+            const size = machine.offsetWidth - 20;
             balls.forEach(b => {
                 b.x += b.vx; b.y += b.vy;
                 if(b.x<0 || b.x>size) b.vx *= -1;
@@ -198,14 +216,10 @@
             bonusTray.innerHTML = '';
             
             const mainNums = []; while(mainNums.length < 5) { let n = Math.floor(Math.random()*50)+1; if(!mainNums.includes(n)) mainNums.push(n); }
-            const euroNums = []; while(euroNums.length < 2) { let n = Math.floor(Math.random()*12)+1; if(!euroNums.includes(n)) euroNums.push(n); }
+            const bonusNums = []; while(bonusNums.length < 2) { let n = Math.floor(Math.random()*12)+1; if(!bonusNums.includes(n)) bonusNums.push(n); }
 
-            for(const v of mainNums) {
-                await extractBall(v, 'main', mainTray);
-            }
-            for(const v of euroNums) {
-                await extractBall(v, 'euro', bonusTray);
-            }
+            for(const v of mainNums) { await extractBall(v, 'main', mainTray); }
+            for(const v of bonusNums) { await extractBall(v, 'bonus', bonusTray); }
 
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
             setTimeout(() => { modal.style.display = 'flex'; }, 500);

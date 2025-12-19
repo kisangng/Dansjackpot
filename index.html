@@ -64,34 +64,39 @@
         }
         .anim-drop { display: flex; animation: drop 0.6s ease-in forwards; }
 
-        /* 결과 영역: 강제로 줄바꿈을 제어 */
+        /* 결과 영역 레이아웃 수정 */
         .result-area {
-            display: flex; flex-direction: column; gap: 10px; align-items: center;
-            width: 100%; padding: 0 10px;
+            display: flex; flex-direction: column; gap: 15px; align-items: center;
+            width: 100%;
         }
 
-        .tray {
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            min-height: 50px; width: 100%;
-            flex-wrap: nowrap; /* 절대 줄바꿈 되지 않게 설정 */
+        /* 그리드를 사용하여 윗줄 5칸 강제 고정 */
+        #main-tray {
+            display: grid;
+            grid-template-columns: repeat(5, 45px); /* 45px씩 5칸 고정 */
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
         }
 
-        .tray.bonus-row {
-            margin-top: 5px;
-            padding: 8px;
-            background: rgba(168, 85, 247, 0.1);
-            border-radius: 15px;
-            width: auto;
-            min-width: 120px;
+        /* 보너스 줄 2칸 강제 고정 */
+        #bonus-tray {
+            display: grid;
+            grid-template-columns: repeat(2, 45px); /* 45px씩 2칸 고정 */
+            gap: 15px;
+            justify-content: center;
+            padding: 10px 20px;
+            background: rgba(168, 85, 247, 0.15);
+            border-radius: 50px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
         }
 
         .final-ball {
-            width: 42px; height: 42px; border-radius: 50%;
+            width: 45px; height: 45px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: bold; color: #000;
             animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            flex-shrink: 0; /* 공 크기가 줄어들지 않게 함 */
         }
         .main { background: linear-gradient(135deg, #ffd700, #b8860b); }
         .euro { background: linear-gradient(135deg, #e879f9, #6b21a8); color: white; }
@@ -127,9 +132,7 @@
     </div>
 
     <div class="result-area">
-        <div class="tray" id="main-tray"></div>
-        <div class="tray bonus-row" id="bonus-tray"></div>
-    </div>
+        <div id="main-tray"></div> <div id="bonus-tray"></div> </div>
 
     <button id="draw-btn" class="btn-draw" onclick="startDraw()">START DRAW</button>
 
@@ -142,10 +145,6 @@
     </div>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
-        }
-
         const machine = document.getElementById('machine');
         const mainTray = document.getElementById('main-tray');
         const bonusTray = document.getElementById('bonus-tray');

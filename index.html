@@ -6,10 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#020617">
-    
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/248/248960.png">
-    
     <title>Danny's Jackpot</title>
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -22,118 +19,74 @@
             --bg: #020617;
         }
 
-        * { 
-            -webkit-tap-highlight-color: transparent; 
-            user-select: none; 
-            box-sizing: border-box; 
-        }
+        * { -webkit-tap-highlight-color: transparent; user-select: none; box-sizing: border-box; }
 
         body {
             background: radial-gradient(circle at center, #1e293b, var(--bg));
-            color: white; 
-            font-family: 'Montserrat', sans-serif;
-            margin: 0; 
-            padding: 0; 
-            width: 100vw; 
-            height: 100dvh;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            justify-content: space-evenly; 
-            overflow: hidden;
+            color: white; font-family: 'Montserrat', sans-serif;
+            margin: 0; padding: 0; width: 100vw; height: 100dvh;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: space-evenly; overflow: hidden;
         }
 
         h1 { 
-            font-family: 'Orbitron', sans-serif; 
-            font-size: 1.8rem;
-            color: var(--gold); 
-            text-shadow: 0 0 10px rgba(255,215,0,0.5);
-            margin: 10px 0;
-            text-align: center;
+            font-family: 'Orbitron', sans-serif; font-size: 1.6rem;
+            color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.5);
+            margin: 5px 0; text-align: center;
         }
 
         .machine-container {
-            position: relative; 
-            width: 75vw; 
-            height: 75vw; 
-            max-width: 280px; 
-            max-height: 280px;
-            border: 6px solid #475569; 
-            border-radius: 50%;
-            background: rgba(0,0,0,0.6); 
-            box-shadow: inset 0 0 30px #000;
+            position: relative; width: 70vw; height: 70vw; max-width: 260px; max-height: 260px;
+            border: 6px solid #475569; border-radius: 50%;
+            background: rgba(0,0,0,0.6); box-shadow: inset 0 0 30px #000;
             overflow: hidden;
         }
 
         .phys-ball {
-            position: absolute; 
-            width: 28px; 
-            height: 28px; 
-            border-radius: 50%;
+            position: absolute; width: 25px; height: 25px; border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #fff, #94a3b8);
-            color: #000; 
-            font-size: 10px; 
-            font-weight: bold;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
+            color: #000; font-size: 9px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .pipe { 
-            width: 50px; 
-            height: 30px; 
-            background: #475569; 
-            clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%); 
-        }
+        .pipe { width: 50px; height: 25px; background: #475569; clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%); }
 
         .dropping-ball {
-            position: absolute; 
-            width: 50px; 
-            height: 50px; 
-            border-radius: 50%;
-            left: 50%; 
-            transform: translateX(-50%); 
-            display: none;
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.5rem; 
-            font-weight: bold;
-            z-index: 10; 
-            color: #000;
+            position: absolute; width: 45px; height: 45px; border-radius: 50%;
+            left: 50%; transform: translateX(-50%); display: none;
+            align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold;
+            z-index: 10; color: #000;
         }
 
         @keyframes drop {
             0% { transform: translate(-50%, 0) scale(0.6); opacity: 1; }
-            100% { transform: translate(-50%, 100px) scale(1) rotate(360deg); opacity: 0; }
+            100% { transform: translate(-50%, 80px) scale(1) rotate(360deg); opacity: 0; }
         }
-        .anim-drop { display: flex; animation: drop 0.7s ease-in forwards; }
+        .anim-drop { display: flex; animation: drop 0.6s ease-in forwards; }
 
-        .result-tray {
-            width: 90vw; 
-            min-height: 80px; 
-            background: rgba(15, 23, 42, 0.9);
-            border: 2px solid var(--gold); 
-            border-radius: 20px;
-            display: flex; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            align-items: center;
-            gap: 8px; 
-            padding: 10px;
+        /* 결과 창 디자인 변경: 두 줄 레이아웃 */
+        .result-area {
+            display: flex; flex-direction: column; gap: 15px; align-items: center;
+            width: 95vw;
+        }
+
+        .tray {
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            min-height: 55px; width: 100%;
+        }
+
+        /* 보너스 번호 칸은 조금 다르게 표시 */
+        .tray.bonus {
+            border-top: 1px dashed rgba(255,215,0,0.3);
+            padding-top: 10px;
         }
 
         .final-ball {
-            width: 45px; 
-            height: 45px; 
-            border-radius: 50%;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            font-family: 'Orbitron', sans-serif; 
-            font-size: 1.2rem; 
-            font-weight: bold; 
-            color: #000;
+            width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: bold; color: #000;
             animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .main { background: linear-gradient(135deg, #ffd700, #b8860b); }
         .euro { background: linear-gradient(135deg, #e879f9, #6b21a8); color: white; }
@@ -141,34 +94,20 @@
         @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
         .btn-draw {
-            width: 80vw; 
-            max-width: 280px; 
-            padding: 18px; 
-            border-radius: 50px;
-            border: none; 
-            background: var(--gold); 
-            color: #000;
-            font-family: 'Orbitron', sans-serif; 
-            font-size: 1.3rem; 
-            font-weight: bold;
-            box-shadow: 0 5px 20px rgba(251, 191, 36, 0.4); 
-            cursor: pointer;
+            width: 80vw; max-width: 280px; padding: 16px; border-radius: 50px;
+            border: none; background: var(--gold); color: #000;
+            font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: bold;
+            box-shadow: 0 5px 20px rgba(251, 191, 36, 0.4); cursor: pointer;
         }
         .btn-draw:disabled { background: #475569; opacity: 0.6; }
 
-        /* Modal */
         #modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: none; 
-            align-items: center; justify-content: center; z-index: 1000;
+            background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 1000;
         }
         .modal-content {
-            background: white; color: #1e293b; padding: 30px; border-radius: 25px;
-            text-align: center; width: 80%; max-width: 300px;
-        }
-        .close-btn { 
-            margin-top: 20px; padding: 10px 30px; background: #1e293b; color: white; 
-            border: none; border-radius: 10px; font-weight: bold;
+            background: white; color: #1e293b; padding: 25px; border-radius: 20px;
+            text-align: center; width: 80%; max-width: 280px;
         }
     </style>
 </head>
@@ -182,8 +121,9 @@
         <div id="dropping-ball" class="dropping-ball"></div>
     </div>
 
-    <div class="result-tray" id="tray">
-        <span style="color:#64748b; font-size:0.8rem;">Tap Start for Good Luck!</span>
+    <div class="result-area">
+        <div class="tray" id="main-tray"></div>
+        <div class="tray bonus" id="bonus-tray"></div>
     </div>
 
     <button id="draw-btn" class="btn-draw" onclick="startDraw()">START DRAW</button>
@@ -191,23 +131,19 @@
     <div id="modal">
         <div class="modal-content">
             <h2 style="font-family:'Orbitron'; margin:0; color:#b8860b;">WINNER!</h2>
-            <p style="margin:15px 0;">Danny, we believe in your luck!<br>Hope you win the 1st prize!</p>
-            <button class="close-btn" onclick="closeModal()">CLOSE</button>
+            <p style="margin:15px 0;">Danny, we believe in your luck!<br>Hope you win 1st prize!</p>
+            <button style="padding:8px 25px; background:#1e293b; color:white; border:none; border-radius:8px;" onclick="closeModal()">CLOSE</button>
         </div>
     </div>
 
     <script>
-        // 서비스 워커 등록 코드
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('SW registered!', reg))
-                    .catch(err => console.log('SW registration failed!', err));
-            });
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); });
         }
 
         const machine = document.getElementById('machine');
-        const tray = document.getElementById('tray');
+        const mainTray = document.getElementById('main-tray');
+        const bonusTray = document.getElementById('bonus-tray');
         const dropBall = document.getElementById('dropping-ball');
         const drawBtn = document.getElementById('draw-btn');
         const modal = document.getElementById('modal');
@@ -215,22 +151,21 @@
         let audioCtx;
 
         function initBalls() {
-            machine.innerHTML = '';
-            balls = [];
+            machine.innerHTML = ''; balls = [];
             for(let i=0; i<30; i++) {
                 const el = document.createElement('div');
                 el.className = 'phys-ball';
                 el.innerText = Math.floor(Math.random()*50)+1;
                 machine.appendChild(el);
                 balls.push({
-                    el, x: Math.random()*240, y: Math.random()*240,
+                    el, x: Math.random()*220, y: Math.random()*220,
                     vx: (Math.random()-0.5)*5, vy: (Math.random()-0.5)*5
                 });
             }
         }
 
         function animate() {
-            const size = machine.offsetWidth - 30;
+            const size = machine.offsetWidth - 25;
             balls.forEach(b => {
                 b.x += b.vx; b.y += b.vy;
                 if(b.x<0 || b.x>size) b.vx *= -1;
@@ -255,30 +190,19 @@
 
         async function startDraw() {
             drawBtn.disabled = true;
-            tray.innerHTML = '';
+            mainTray.innerHTML = '';
+            bonusTray.innerHTML = '';
             
             const mainNums = []; while(mainNums.length < 5) { let n = Math.floor(Math.random()*50)+1; if(!mainNums.includes(n)) mainNums.push(n); }
             const euroNums = []; while(euroNums.length < 2) { let n = Math.floor(Math.random()*12)+1; if(!euroNums.includes(n)) euroNums.push(n); }
-            const sequence = [...mainNums.map(v=>({v, t:'main'})), ...euroNums.map(v=>({v, t:'euro'}))];
 
-            for(const item of sequence) {
-                balls.forEach(b => { b.vx *= 2.5; b.vy *= 2.5; });
-                playSound(200, 0.4, 0.1);
-                await new Promise(r => setTimeout(r, 1200));
-
-                dropBall.innerText = item.v;
-                dropBall.className = `dropping-ball ${item.t} anim-drop`;
-                playSound(150, 0.6, 0.2);
-                await new Promise(r => setTimeout(r, 700));
-
-                const b = document.createElement('div');
-                b.className = `final-ball ${item.t}`;
-                b.innerText = item.v;
-                tray.appendChild(b);
-                playSound(100, 0.2, 0.3);
-
-                dropBall.className = 'dropping-ball';
-                balls.forEach(b => { b.vx /= 2.5; b.vy /= 2.5; });
+            // 일반 번호 5개 먼저 추첨
+            for(const v of mainNums) {
+                await extractBall(v, 'main', mainTray);
+            }
+            // 보너스 번호 2개 추첨
+            for(const v of euroNums) {
+                await extractBall(v, 'euro', bonusTray);
             }
 
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
@@ -286,8 +210,27 @@
             drawBtn.disabled = false;
         }
 
+        async function extractBall(v, type, targetTray) {
+            balls.forEach(b => { b.vx *= 2.5; b.vy *= 2.5; });
+            playSound(200, 0.4, 0.1);
+            await new Promise(r => setTimeout(r, 1000));
+
+            dropBall.innerText = v;
+            dropBall.className = `dropping-ball ${type} anim-drop`;
+            playSound(150, 0.6, 0.2);
+            await new Promise(r => setTimeout(r, 600));
+
+            const b = document.createElement('div');
+            b.className = `final-ball ${type}`;
+            b.innerText = v;
+            targetTray.appendChild(b);
+            playSound(100, 0.2, 0.3);
+
+            dropBall.className = 'dropping-ball';
+            balls.forEach(b => { b.vx /= 2.5; b.vy /= 2.5; });
+        }
+
         function closeModal() { modal.style.display = 'none'; }
-        
         window.onload = () => { initBalls(); animate(); };
     </script>
 </body>
